@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voronoi Google Map</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        #header {
+            background-color: #1565c0;
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        #header h1 {
+            color: #ffffff;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            margin: 20px 10px 10px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        #map {
+            width: 100%;
+            height: 70vh;
+            margin: 0;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 10px;
+        }
+
+        .button {
+            background-image: linear-gradient(144deg, #1565c0, #1976d2 50%, #1e88e5);
+            border: none;
+            border-radius: 8px;
+            box-shadow: rgba(25, 101, 176, 0.2) 0 10px 20px;
+            color: white;
+            font-size: 1rem;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            min-width: 140px;
+        }
+
+        .button:hover {
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 600px) {
+            #header h1 {
+                font-size: 1.4rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            .button {
+                font-size: 0.9rem;
+                padding: 10px 16px;
+                min-width: 120px;
+            }
+
+            .button-container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="header">
+    <h1>Voronoi Map For Supermarkets</h1>
+</div>
+
+<h3>Click buttons to interact with the map:</h3>
+<div id="map"></div>
+
+<div class="button-container">
+    <button type="button" onclick="getSupermarkets(map)" id="supermarket" class="button">Get Supermarkets</button>
+    <button type="button" onclick="polygon(map)" id="voronoi" class="button" style="display: none;">Get Voronoi
+        Diagram
+    </button>
+    <button type="button" onclick="reset()" id="reset" class="button" style="display: none;">Reset Map</button>
+</div>
+
+<script th:inline="javascript">
+    let map;
+    const yerevan = {lat: 40.179186, lng: 44.503490};
+    let markers = [];
+    let voronoi;
+
+    function initMap() {
+        map = new google.maps.Map(
+            document.getElementById('map'),
+            {zoom: 13, center: yerevan}
+        );
+    }
+
+    function getSupermarkets(map) {
+        const eventSource = new EventSource('/api/supermarkets');
+
+        eventSource.onerror = function () {
+            console.log('All supermarkets received. Closing SSE.');
+            eventSource.close();
+        }
+
+        eventSource.onmessage = function (event) {
+            const supermarket = JSON.parse(event.data);
+
+            const coords = {lat: supermarket.latitude, lng: supermarket.longitude};
+
+            const marker = new google.maps.Marker({
+                position: coords,
+                map: map,
+                title: supermarket.name,
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<b>${supermarket?.name}</b><br>${supermarket?.description}`
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            markers.push(marker);
+        };
+
+        // UI toggles
+        document.getElementById('supermarket').style.display = 'none';
+        document.getElementById('voronoi').style.display = 'block';
+    }
+
+    function polygon(map) {
+        fetch('/api/polygons')
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Voronoi Data:", data);
+
+                voronoi = new google.maps.Polygon({
+                    map: map,
+                    paths: data,
+                    fillColor: '#00000000',
+                    strokeColor: "#1e88e5",
+                    strokeWeight: 2
+                });
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+
+        document.getElementById('voronoi').style.display = 'none';
+        document.getElementById('reset').style.display = 'block';
+    }
+
+    function reset() {
+        while (markers.length !== 0) {
+            let marker = markers.pop();
+            marker.setMap(null);
+        }
+
+        if (voronoi) {
+            voronoi.setMap(null);
+        }
+
+        document.getElementById('reset').style.display = 'none';
+        document.getElementById('supermarket').style.display = 'block';
+    }
+</script>
+
+<script async defer th:src="@{https://maps.googleapis.com/maps/api/js?callback=initMap(key=${apiKey})}"
+        type="text/javascript"></script>
+</body>
+</html>

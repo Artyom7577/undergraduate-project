@@ -1,0 +1,14 @@
+server:
+  port: 7070
+
+google:
+  map:
+    base-url: https://places.googleapis.com/v1/places:searchText
+
+spring:
+  data:
+    mongodb:
+      uri: "mongodb://localhost:27017"
+      database: supermarkets
+      ssl:
+        enabled: false
