@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 @Slf4j
-//@Configuration
+@Configuration
 public class ApplicationConfig implements CommandLineRunner {
     private final SupermarketService supermarketService;
 
