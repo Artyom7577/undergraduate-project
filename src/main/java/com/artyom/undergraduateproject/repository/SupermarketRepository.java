@@ -1,7 +1,5 @@
 package com.artyom.undergraduateproject.repository;
 
-import java.util.Optional;
-
 import com.artyom.undergraduateproject.entity.Supermarket;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;

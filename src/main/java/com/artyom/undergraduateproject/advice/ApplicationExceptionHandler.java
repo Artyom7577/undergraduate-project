@@ -1,12 +1,12 @@
 package com.artyom.undergraduateproject.advice;
 
-import java.net.URI;
-
 import com.artyom.undergraduateproject.exceptions.ApplicationExceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.net.URI;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler {

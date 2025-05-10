@@ -1,24 +1,12 @@
 package com.artyom.undergraduateproject.service.impl;
 
-import static com.artyom.undergraduateproject.mapper.EntityDtoMapper.fromJsonNode;
-import static com.artyom.undergraduateproject.service.util.Constants.*;
-
-import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.artyom.undergraduateproject.entity.Supermarket;
-import com.artyom.undergraduateproject.exceptions.ApplicationExceptions;
 import com.artyom.undergraduateproject.mapper.EntityDtoMapper;
 import com.artyom.undergraduateproject.repository.SupermarketRepository;
 import com.artyom.undergraduateproject.service.SupermarketService;
-import com.artyom.undergraduateproject.service.util.Constants;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -27,6 +15,13 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.artyom.undergraduateproject.service.util.Constants.*;
 
 @Slf4j
 @Service

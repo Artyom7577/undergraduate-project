@@ -1,8 +1,5 @@
 package com.artyom.undergraduateproject.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.artyom.undergraduateproject.dto.Point;
 import com.artyom.undergraduateproject.dto.SupermarketDto;
 import com.artyom.undergraduateproject.mapper.EntityDtoMapper;
@@ -15,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")

@@ -1,7 +1,6 @@
 package com.artyom.undergraduateproject.service;
 
 import com.artyom.undergraduateproject.entity.Supermarket;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

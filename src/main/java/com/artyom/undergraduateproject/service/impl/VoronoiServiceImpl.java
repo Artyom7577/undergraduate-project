@@ -1,10 +1,5 @@
 package com.artyom.undergraduateproject.service.impl;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
-import com.artyom.undergraduateproject.entity.Supermarket;
 import com.artyom.undergraduateproject.repository.SupermarketRepository;
 import com.artyom.undergraduateproject.service.VoronoiService;
 import org.kynosarges.tektosyne.geometry.PointD;
